@@ -14,9 +14,7 @@ public class ZoomInZoomOut : MonoBehaviour {
 	[SerializeField]
 	float zoomModifierSpeed = 0.1f;
 
-	[SerializeField]
-	Text text;
-
+	
 	// Use this for initialization
 	void Start () {
 		mainCamera = GetComponent<Camera> ();
@@ -44,8 +42,8 @@ public class ZoomInZoomOut : MonoBehaviour {
 			
 		}
 
-		mainCamera.orthographicSize = Mathf.Clamp (mainCamera.orthographicSize, 0.50f, 30f);
-		text.text = "Camera size " + mainCamera.orthographicSize;
+		mainCamera.orthographicSize = Mathf.Clamp (mainCamera.orthographicSize, 0.25f,2.15f);
+		
 
 	}
 }
