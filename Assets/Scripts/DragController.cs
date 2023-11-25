@@ -1,72 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+
 public class DragController : MonoBehaviour
-
 {
-    private bool isDragging = false;
-    private Vector3 offset;
-    
+        Vector3 offset;
+        Collider2D collider2d;
+        public string destinationTag = "DropArea";
 
-  
-
-    void OnMouseDown()
-    {
-        // Set the flag to indicate that dragging has started
-        isDragging = true;
-
-        // Calculate the offset between the object's position and the mouse position
-        offset = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    void OnMouseUp()
-    {
-        // Reset the flag when the mouse button is released
-        isDragging = false;
-
-    }
-
-    void Update()
-    {
-        if (isDragging)
+        void Awake()
         {
-            // Update the object's position based on the mouse position
-            Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) + offset;
-
-            // Check the direction of the drag
-            if (newPosition.x > transform.position.x && Mathf.Abs(newPosition.x - transform.position.x) > Mathf.Abs(newPosition.y - transform.position.y))
-            {
-                Debug.Log("Player is moving Horizontal Rightward Drag");
-            }
-            else if (newPosition.x < transform.position.x && Mathf.Abs(newPosition.x - transform.position.x) > Mathf.Abs(newPosition.y - transform.position.y))
-            {
-                Debug.Log("Player is moving Horizontal Leftward Drag");
-            }
-            else if (newPosition.y > transform.position.y && Mathf.Abs(newPosition.y - transform.position.y) > Mathf.Abs(newPosition.x - transform.position.x))
-            {
-                Debug.Log("Player is moving Upward Drag");
-            }
-            else if (newPosition.y < transform.position.y && Mathf.Abs(newPosition.y - transform.position.y) > Mathf.Abs(newPosition.x - transform.position.x))
-            {
-                Debug.Log("Player is moving Downward Drag");
-            }
-
-            transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
+            collider2d = GetComponent<Collider2D>();
         }
-    }
 
-   
+        void OnMouseDown()
+        {
+            offset = transform.position - MouseWorldPosition();
+        }
+
+        void OnMouseDrag()
+        {
+            transform.position = MouseWorldPosition() + offset;
+        }
+
+        void OnMouseUp()
+        {
+            collider2d.enabled = false;
+            var rayOrigin = Camera.main.transform.position;
+            var rayDirection = MouseWorldPosition() - Camera.main.transform.position;
+            RaycastHit2D hitInfo;
+            if (hitInfo = Physics2D.Raycast(rayOrigin, rayDirection))
+            {
+                if (hitInfo.transform.tag == destinationTag)
+                {
+                    transform.position = hitInfo.transform.position + new Vector3(0, 0, -0.01f);
+                }
+            }
+            collider2d.enabled = true;
+        }
+
+        Vector3 MouseWorldPosition()
+        {
+            var mouseScreenPos = Input.mousePosition;
+            mouseScreenPos.z = Camera.main.WorldToScreenPoint(transform.position).z;
+            return Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        }
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
