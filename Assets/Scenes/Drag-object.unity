@@ -405,6 +405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationTag: DropArea
+  scenerio: 2
 --- !u!1 &119662111
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +550,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationTag: DropArea
+  scenerio: 0
+--- !u!1 &148198540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 148198542}
+  - component: {fileID: 148198541}
+  m_Layer: 0
+  m_Name: DragManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &148198541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148198540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69b35c63d0bb0d47a362165674954ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragObjects:
+  - gameObject: {fileID: 1133177086}
+    scenerio: 0
+    completedTime: 0
+  - gameObject: {fileID: 1967189183}
+    scenerio: 1
+    completedTime: 0
+  - gameObject: {fileID: 1391632038}
+    scenerio: 2
+    completedTime: 0
+  - gameObject: {fileID: 1578015818}
+    scenerio: 3
+    completedTime: 0
+  activeScenerio:
+    gameObject: {fileID: 0}
+    scenerio: 0
+    completedTime: 0
+  repeatRate: 3
+--- !u!4 &148198542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148198540}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &359658013
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,6 +887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationTag: DropArea
+  scenerio: 1
 --- !u!1 &1133177086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destinationTag: DropArea
+  scenerio: 3
 --- !u!1 &1898913771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1403,7 @@ GameObject:
   - component: {fileID: 1898913774}
   - component: {fileID: 1898913773}
   - component: {fileID: 1898913772}
+  - component: {fileID: 1898913775}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1387,7 +1454,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9.375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1418,6 +1485,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1898913775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898913771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749db11ca19dace4e964a4782b979b48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wireColor: {r: 1, g: 1, b: 1, a: 1}
+  UnitsSize: 25
+  constraint: 0
+  camera: {fileID: 1898913773}
+  executeInUpdate: 1
 --- !u!1 &1967189183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,3 +1613,4 @@ SceneRoots:
   - {fileID: 1578015819}
   - {fileID: 1967189184}
   - {fileID: 1133177087}
+  - {fileID: 148198542}
