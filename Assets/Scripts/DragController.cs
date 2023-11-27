@@ -8,10 +8,12 @@ public class DragController : MonoBehaviour
         Vector3 offset;
         Collider2D collider2d;
         public string destinationTag = "DropArea";
-
+        public DragScenerios scenerio;
+    Vector3 startpos;
         void Awake()
         {
             collider2d = GetComponent<Collider2D>();
+        startpos = transform.position;
         }
 
         void OnMouseDown()
@@ -35,6 +37,7 @@ public class DragController : MonoBehaviour
                 if (hitInfo.transform.tag == destinationTag)
                 {
                     transform.position = hitInfo.transform.position + new Vector3(0, 0, -0.01f);
+                GameObject.FindAnyObjectByType<DragManager>().OnDragCompleted(scenerio);
                 }
             }
             collider2d.enabled = true;
@@ -46,5 +49,14 @@ public class DragController : MonoBehaviour
             mouseScreenPos.z = Camera.main.WorldToScreenPoint(transform.position).z;
             return Camera.main.ScreenToWorldPoint(mouseScreenPos);
         }
-    
+    public void Reset()
+    {
+        transform.position = startpos;
+    }
+
+}
+[Serializable]
+public enum DragScenerios
+{
+    left,right,up,down
 }
