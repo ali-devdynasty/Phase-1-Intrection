@@ -33,7 +33,7 @@ public class onefingerdoubletap : MonoBehaviour
                     if (timeSinceLastTap < maxTimeBetweenTaps && overUi)
                     {
                         // Called when a one-finger double tap occurs
-                        Debug.Log("One-finger double tap detected");
+                        Debug.Log("Double Tap(One-finger");
                     }
 
                     // Update the last tap time

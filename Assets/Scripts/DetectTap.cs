@@ -21,7 +21,7 @@ public class DetectTap : MonoBehaviour
             // Check if both touches are in the Began phase
             if (touch1.phase == TouchPhase.Began && overUi)
             {
-                Debug.Log("One-finger single tap detected");
+                Debug.Log("Single Tap(One-finger");
             }
         }
     }  

@@ -50,7 +50,7 @@ public class hardpress : MonoBehaviour
     void HandleHardPress()
     {
         // Implement your logic for a hard press
-        Debug.Log("Hard press detected");
+        Debug.Log("Hard Press");
     }
 }
 
