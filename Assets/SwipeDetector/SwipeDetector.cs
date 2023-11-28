@@ -16,12 +16,15 @@ public class SwipeDetector : MonoBehaviour
     private float minDistanceForSwipe = 20f;
 
     [SerializeField]
-    private float arrowLaunchForce = 500f;
+    public float arrowLaunchForce = 500f;
 
-    public static event Action<SwipeData> OnSwipe = delegate { };
+    public static Action<SwipeDirection,Vector2> OnSwipe ;
 
     [SerializeField]
     private List<Rigidbody2D> arrowRigidbodies = new List<Rigidbody2D>();
+    public float minDistanceForEdgeSwipe;
+
+    bool touchedAtBottom = false;
 
     private void Update()
     {
@@ -45,6 +48,24 @@ public class SwipeDetector : MonoBehaviour
                 DetectSwipe();
             }
         }
+
+
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            // Check if the touch phase is at the beginning (touch start)
+            if (touch.phase == TouchPhase.Began)
+            {
+                // Check if the touch position is at the bottom of the screen
+                if (touch.position.y < Screen.height * 0.2f)
+                {
+                    Debug.Log("Touched at the bottom of the screen");
+                    touchedAtBottom = true;
+                    // Your code for handling the touch at the bottom of the screen
+                }
+            }
+        }
     }
 
     private void DetectSwipe()
@@ -52,7 +73,7 @@ public class SwipeDetector : MonoBehaviour
         if (SwipeDistanceCheckMet())
         {
             var swipeDirection = CalculateSwipeDirection();
-
+            touchedAtBottom = false;
             if (swipeDirection != SwipeDirection.None)
             {
                 Vector2 forceDirection = Vector2.zero;
@@ -62,88 +83,90 @@ public class SwipeDetector : MonoBehaviour
                     case SwipeDirection.Up:
                         forceDirection = Vector2.up;
                         Debug.Log("Swipe Up detected");
+                        OnSwipe?.Invoke(swipeDirection, forceDirection);
                         break;
                     case SwipeDirection.Down:
                         forceDirection = Vector2.down;
+                        OnSwipe?.Invoke(swipeDirection, forceDirection);
                         Debug.Log("Swipe Down detected");
                         break;
                     case SwipeDirection.Left:
                         forceDirection = Vector2.left;
+                        OnSwipe?.Invoke(swipeDirection, forceDirection );
                         Debug.Log("Swipe Left detected");
                         break;
                     case SwipeDirection.Right:
                         forceDirection = Vector2.right;
+                        OnSwipe?.Invoke(swipeDirection, forceDirection);
                         Debug.Log("Swipe Right detected");
                         break;
                     case SwipeDirection.SwipeEdgeRight:
                         forceDirection = Vector2.right;
+                        OnSwipe?.Invoke(swipeDirection, forceDirection);
                         Debug.Log("Swipe Edge Right detected");
                         break;
                     case SwipeDirection.SwipeEdgeLeft:
                         forceDirection = Vector2.left;
+                        OnSwipe?.Invoke(swipeDirection, forceDirection);
                         Debug.Log("Swipe Edge Left detected");
                         break;
                 }
-
-                ApplyForceToArrows(forceDirection);
             }
-
+            
             fingerUpPosition = fingerDownPosition;
         }
     }
 
     private SwipeDirection CalculateSwipeDirection()
     {
-          float x = fingerDownPosition.x - fingerUpPosition.x;
-          float y = fingerDownPosition.y - fingerUpPosition.y;
+        // Calculate swipe direction based on finger movement
+        float x = fingerDownPosition.x - fingerUpPosition.x;
+        float y = fingerDownPosition.y - fingerUpPosition.y;
 
-           float absX = Mathf.Abs(x);
-           float absY = Mathf.Abs(y);
-
-    if (absX > absY)
-    {
-        if (x > minDistanceForSwipe)
+        float absX = Mathf.Abs(x);
+        float absY = Mathf.Abs(y);
+        // Check for edge swipes first, as they have higher priority
+        if (absX > absY)
         {
-            return SwipeDirection.Right;
-        }
-        else if (x < -minDistanceForSwipe)
-        {
-            return SwipeDirection.Left;
-        }
-        else
-        {
-            if (fingerUpPosition.x > Screen.width - minDistanceForSwipe)
+            if (x > minDistanceForSwipe && touchedAtBottom)
             {
-                Debug.Log("Swipe Edge Right detected");
                 return SwipeDirection.SwipeEdgeRight;
             }
-            else if (fingerUpPosition.x < minDistanceForSwipe)
+            else if (x < -minDistanceForSwipe && touchedAtBottom)
             {
-                Debug.Log("Swipe Edge Left detected");
                 return SwipeDirection.SwipeEdgeLeft;
             }
-            else
+        }
+
+       
+
+        if (absX > absY)
+        {
+            if (x > minDistanceForSwipe)
             {
-                return SwipeDirection.None;
+                return SwipeDirection.Right;
             }
-        }
-    }
-    else
-    {
-        if (y > minDistanceForSwipe)
-        {
-            return SwipeDirection.Up;
-        }
-        else if (y < -minDistanceForSwipe)
-        {
-            return SwipeDirection.Down;
+            else if (x < -minDistanceForSwipe)
+            {
+                return SwipeDirection.Left;
+            }
         }
         else
         {
-            return SwipeDirection.None;
+            if (y > minDistanceForSwipe)
+            {
+                return SwipeDirection.Up;
+            }
+            else if (y < -minDistanceForSwipe)
+            {
+                return SwipeDirection.Down;
+            }
         }
+
+        return SwipeDirection.None;
     }
-    }
+
+
 
     private bool SwipeDistanceCheckMet()
     {

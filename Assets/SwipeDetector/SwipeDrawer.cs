@@ -9,7 +9,7 @@ public class SwipeDrawer : MonoBehaviour
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        SwipeDetector.OnSwipe += SwipeDetector_OnSwipe;
+       // SwipeDetector.OnSwipe += SwipeDetector_OnSwipe;
     }
 
     private void SwipeDetector_OnSwipe(SwipeData data)
