@@ -9,7 +9,11 @@ public class hardpress : MonoBehaviour
 
     // The time the current touch began
     private float touchStartTime;
-
+    CheckTouchPostion touchPostionchecker;
+    private void Start()
+    {
+        touchPostionchecker = GameObject.FindAnyObjectByType<CheckTouchPostion>();
+    }
     void Update()
     {
         // Check if there is at least one touch on the screen
@@ -17,6 +21,7 @@ public class hardpress : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
+            bool overUi1 = touchPostionchecker.IsTouchOverUI(touch.position);
             // Check the phase of the touch
             switch (touch.phase)
             {
@@ -30,7 +35,7 @@ public class hardpress : MonoBehaviour
                     float touchDuration = Time.time - touchStartTime;
 
                     // Check if the touch duration exceeds the threshold for a hard press
-                    if (touchDuration > hardPressDuration)
+                    if (touchDuration > hardPressDuration && overUi1)
                     {
                         // Called when a hard press is detected
                         HandleHardPress();

@@ -9,6 +9,12 @@ public class onefingerdoubletap : MonoBehaviour
 
     private float lastTapTime;
 
+
+    CheckTouchPostion touchPostionchecker;
+    private void Start()
+    {
+        touchPostionchecker = GameObject.FindAnyObjectByType<CheckTouchPostion>();
+    }
     void Update()
     {
         // Check if there is at least one touch on the screen
@@ -22,9 +28,9 @@ public class onefingerdoubletap : MonoBehaviour
                 case TouchPhase.Began:
                     // Calculate the time since the last tap
                     float timeSinceLastTap = Time.time - lastTapTime;
-
+                    bool overUi = touchPostionchecker.IsTouchOverUI(touch.position);
                     // Check if it's a double tap
-                    if (timeSinceLastTap < maxTimeBetweenTaps)
+                    if (timeSinceLastTap < maxTimeBetweenTaps && overUi)
                     {
                         // Called when a one-finger double tap occurs
                         Debug.Log("One-finger double tap detected");
