@@ -22,6 +22,7 @@ public class DetectTap : MonoBehaviour
             if (touch1.phase == TouchPhase.Began && overUi)
             {
                 Debug.Log("Single Tap(One-finger");
+                TouchManager.OnTouchScenerioCompleted?.Invoke(touchCategory.singleOneFingure);
             }
         }
     }  

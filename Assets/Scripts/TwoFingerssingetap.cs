@@ -25,7 +25,8 @@ public class TwoFingerssingetap : MonoBehaviour
             if (touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began && overUi1 && overUi2)
             {
                 // Called when a two-finger single tap occurs
-                Debug.Log("Double Tap(One-finger");
+                Debug.Log("Single Tap(Two-finger");
+                TouchManager.OnTouchScenerioCompleted?.Invoke(touchCategory.singleTwoFingue);
 
             }
         }

@@ -38,6 +38,7 @@ public class Twofingersdoubletap : MonoBehaviour
                     {
                         // Called when a one-finger double tap occurs
                         Debug.Log("Double Tap(Two-finger");
+                        TouchManager.OnTouchScenerioCompleted?.Invoke(touchCategory.DoubleTwoFingure);
                     }
 
                     // Update the last tap time
