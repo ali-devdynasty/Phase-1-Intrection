@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class ZoomInZoomOut : MonoBehaviour
+public class ZoomIn : MonoBehaviour
 {
     [SerializeField]
     float zoomSpeed = 0.1f;
@@ -12,13 +14,13 @@ public class ZoomInZoomOut : MonoBehaviour
     float maxScale = 2.0f;
 
     [SerializeField]
-    int zoomOutGoal = 3; // Number of times to zoom out for the task
+    int zoomInGoal = 3; // Number of times to zoom in for the task
 
     [SerializeField]
-    float zoomOutDelay = 1.0f; // Delay between zoom out actions in seconds
+    float zoomInDelay = 1.0f; // Delay between zoom in actions in seconds
 
-    private int zoomOutCount = 0; // Counter for zoom out actions
-    private float lastZoomOutTime = 0f; // Time of the last zoom out action
+    private int zoomInCount = 0; // Counter for zoom in actions
+    private float lastZoomInTime = 0f; // Time of the last zoom in action
 
     // Update is called once per frame
     void Update()
@@ -34,16 +36,16 @@ public class ZoomInZoomOut : MonoBehaviour
             float touchesPrevPosDifference = (firstTouchPrevPos - secondTouchPrevPos).magnitude;
             float touchesCurPosDifference = (firstTouch.position - secondTouch.position).magnitude;
 
-            // Check if enough time has passed since the last zoom out action
-            if (Time.time - lastZoomOutTime > zoomOutDelay)
+            // Check if enough time has passed since the last zoom in action
+            if (Time.time - lastZoomInTime > zoomInDelay)
             {
-                // Check for zoom out
-                if (touchesPrevPosDifference > touchesCurPosDifference)
+                // Check for zoom in
+                if (touchesPrevPosDifference < touchesCurPosDifference)
                 {
                     float zoomModifier = (firstTouch.deltaPosition - secondTouch.deltaPosition).magnitude * zoomSpeed;
 
                     // Update the scale directly based on the zoom modifier
-                    Vector3 newScale = transform.localScale * (1 - zoomModifier);
+                    Vector3 newScale = transform.localScale * (1 + zoomModifier);
 
                     // Clamp the scale to a specified range
                     newScale = Vector3.ClampMagnitude(newScale, maxScale);
@@ -52,20 +54,20 @@ public class ZoomInZoomOut : MonoBehaviour
                     // Apply the new scale
                     transform.localScale = newScale;
 
-                    Debug.Log("Zoom Out");
+                    Debug.Log("Zoom In");
 
-                    // Increment the zoom out counter
-                    zoomOutCount++;
+                    // Increment the zoom in counter
+                    zoomInCount++;
 
-                    // Update the time of the last zoom out action
-                    lastZoomOutTime = Time.time;
+                    // Update the time of the last zoom in action
+                    lastZoomInTime = Time.time;
                 }
 
                 // Check if the goal is reached
-                if (zoomOutCount >= zoomOutGoal)
+                if (zoomInCount >= zoomInGoal)
                 {
-                    Debug.Log("Zoom Out Task Complete");
-                    // Add your code to display the "Zoom out task complete" text here
+                    Debug.Log("Zoom In Task Complete");
+                    // Add your code to display the "Zoom in task complete" text here
                 }
             }
         }
@@ -74,6 +76,11 @@ public class ZoomInZoomOut : MonoBehaviour
     // Check if the task is complete
     private bool IsTaskComplete()
     {
-        return zoomOutCount >= zoomOutGoal;
+        return zoomInCount >= zoomInGoal;
     }
 }
+
+
+
+
+
