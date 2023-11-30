@@ -25,7 +25,7 @@ public class ZoomIn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsTaskComplete() && Input.touchCount == 2)
+        if (/*!IsTaskComplete() && */Input.touchCount == 2)
         {
             Touch firstTouch = Input.GetTouch(0);
             Touch secondTouch = Input.GetTouch(1);
