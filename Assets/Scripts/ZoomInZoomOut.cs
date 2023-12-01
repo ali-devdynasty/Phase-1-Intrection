@@ -20,10 +20,12 @@ public class ZoomInZoomOut : MonoBehaviour
     private int zoomOutCount = 0; // Counter for zoom out actions
     private float lastZoomOutTime = 0f; // Time of the last zoom out action
 
+    public ZoomScenerios currentScenerio;
+    bool isCompleted = false;
     // Update is called once per frame
     void Update()
     {
-        if (!IsTaskComplete() && Input.touchCount == 2)
+        if (Input.touchCount == 2)
         {
             Touch firstTouch = Input.GetTouch(0);
             Touch secondTouch = Input.GetTouch(1);
@@ -35,7 +37,7 @@ public class ZoomInZoomOut : MonoBehaviour
             float touchesCurPosDifference = (firstTouch.position - secondTouch.position).magnitude;
 
             // Check if enough time has passed since the last zoom out action
-            if (Time.time - lastZoomOutTime > zoomOutDelay)
+            if (Time.time - lastZoomOutTime > zoomOutDelay && !isCompleted)
             {
                 // Check for zoom out
                 if (touchesPrevPosDifference > touchesCurPosDifference)
@@ -45,9 +47,7 @@ public class ZoomInZoomOut : MonoBehaviour
                     // Update the scale directly based on the zoom modifier
                     Vector3 newScale = transform.localScale * (1 - zoomModifier);
 
-                    // Clamp the scale to a specified range
-                    newScale = Vector3.ClampMagnitude(newScale, maxScale);
-                    newScale = Vector3.ClampMagnitude(newScale, minScale);
+         
 
                     // Apply the new scale
                     transform.localScale = newScale;
@@ -61,19 +61,21 @@ public class ZoomInZoomOut : MonoBehaviour
                     lastZoomOutTime = Time.time;
                 }
 
-                // Check if the goal is reached
-                if (zoomOutCount >= zoomOutGoal)
-                {
-                    Debug.Log("Zoom Out Task Complete");
-                    // Add your code to display the "Zoom out task complete" text here
-                }
+               
             }
         }
+        if (transform.localScale.x <= currentScenerio.referenceSize && !isCompleted)
+        {
+            isCompleted = true;
+            FindAnyObjectByType<ZoomOutManager>().OnZoomComplete();
+            Debug.Log("IsCompleted" + currentScenerio.referenceSize);
+        }
+    }
+    public void SetScenerio(ZoomScenerios scenerios)
+    {
+        transform.localScale = new Vector3(1f, 1f, 1f);
+        isCompleted = false;
+        currentScenerio = scenerios;
     }
 
-    // Check if the task is complete
-    private bool IsTaskComplete()
-    {
-        return zoomOutCount >= zoomOutGoal;
-    }
 }

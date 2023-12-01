@@ -22,6 +22,8 @@ public class ZoomIn : MonoBehaviour
     private int zoomInCount = 0; // Counter for zoom in actions
     private float lastZoomInTime = 0f; // Time of the last zoom in action
 
+    public ZoomScenerios currentScenerio;
+    bool iscomplete = false;
     // Update is called once per frame
     void Update()
     {
@@ -40,16 +42,12 @@ public class ZoomIn : MonoBehaviour
             if (Time.time - lastZoomInTime > zoomInDelay)
             {
                 // Check for zoom in
-                if (touchesPrevPosDifference < touchesCurPosDifference)
+                if (touchesPrevPosDifference < touchesCurPosDifference && !iscomplete)
                 {
                     float zoomModifier = (firstTouch.deltaPosition - secondTouch.deltaPosition).magnitude * zoomSpeed;
 
                     // Update the scale directly based on the zoom modifier
                     Vector3 newScale = transform.localScale * (1 + zoomModifier);
-
-                    // Clamp the scale to a specified range
-                    newScale = Vector3.ClampMagnitude(newScale, maxScale);
-                    newScale = Vector3.ClampMagnitude(newScale, minScale);
 
                     // Apply the new scale
                     transform.localScale = newScale;
@@ -62,25 +60,24 @@ public class ZoomIn : MonoBehaviour
                     // Update the time of the last zoom in action
                     lastZoomInTime = Time.time;
                 }
+                Debug.Log(transform.localScale.x);
 
-                // Check if the goal is reached
-                if (zoomInCount >= zoomInGoal)
-                {
-                    Debug.Log("Zoom In Task Complete");
-                    // Add your code to display the "Zoom in task complete" text here
-                }
+            }
+
+            if(transform.localScale.x >= currentScenerio.referenceSize && !iscomplete)
+            {
+                iscomplete = true;
+                FindAnyObjectByType<ZoomInManager>().OnZoomComplete();
+                Debug.Log("IsCompleted");
             }
         }
     }
 
-    // Check if the task is complete
-    private bool IsTaskComplete()
+    public void SetScenerio(ZoomScenerios scenerios)
     {
-        return zoomInCount >= zoomInGoal;
+        transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        iscomplete = false;
+        currentScenerio = scenerios;
     }
+
 }
-
-
-
-
-

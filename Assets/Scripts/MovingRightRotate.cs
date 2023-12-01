@@ -1,14 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovingRightRotate : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 90f; // Adjust the speed as needed
+    private float rotationSpeed = 50f; // Adjust the speed as needed
     private Vector2 touchStartPos;
     private bool isSwiping = false;
     private float rotationDirection = 0f;
 
+    public bool RightRotate;
+
+    public GameObject reference;
+    bool iscompleted = false;
+    Quaternion startRotation;
+
+    private void Awake()
+    {
+        startRotation = transform.rotation;
+    }
     void Update()
     {
         // Check for swipe input
@@ -35,13 +46,13 @@ public class MovingRightRotate : MonoBehaviour
                             rotationDirection = -Mathf.Sign(swipeDelta.x); // Reverse the rotation direction
 
                             // Debug messages
-                            if (rotationDirection > 0)
+                            if (rotationDirection > 0 && !RightRotate)
                             {
-                                Debug.Log("Moving Leftward Rotate");
+                                Debug.Log("detecting Leftward Rotate");
                             }
-                            else
+                            else if (RightRotate)
                             {
-                                Debug.Log("Moving Rightward Rotate");
+                                Debug.Log("deceting Rightward Rotate");
                             }
                         }
                         else
@@ -58,9 +69,49 @@ public class MovingRightRotate : MonoBehaviour
                     break;
             }
         }
+        if (RightRotate)
+        {
+            if (rotationDirection < 0f && !iscompleted)
+            {
+                //Debug.Log("Moving right Rotate");
+                transform.Rotate(Vector3.up, rotationDirection * rotationSpeed * Time.deltaTime);
+                //Debug.Log("Me" + transform.localRotation.eulerAngles.y + " His " + reference.transform.localRotation.eulerAngles.y);
+                var difference = Mathf.Abs(reference.transform.localRotation.eulerAngles.y - transform.localRotation.eulerAngles.y);
+                Debug.Log(difference);
+                if (difference <= 2f) // Adjust the threshold value as needed
+                {
+                    iscompleted = true;
+                    Debug.Log("RightCompleted");
+                    Reset();
+                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.right);
+                }
+            }
+        }
+        else
+        {
+            if (rotationDirection > 0f && !iscompleted)
+            {
+                //Debug.Log("Moving left Rotate");
+                transform.Rotate(Vector3.up, rotationDirection * rotationSpeed * Time.deltaTime);
 
+                var difference = Mathf.Abs(transform.localRotation.eulerAngles.y - reference.transform.localRotation.eulerAngles.y);
+                //Debug.Log(difference);
+                if (difference <= 2f) // Adjust the threshold value as needed
+                {
+                    iscompleted = true;
+                    Debug.Log("LeftCompleted");
+                    Reset();
+                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.left);
+                }
+            }
+        }
         // Rotate the object continuously based on the determined direction
-        transform.Rotate(Vector3.up, rotationDirection * rotationSpeed * Time.deltaTime);
+
+    }
+    public void Reset()
+    {
+        transform.rotation = startRotation;
+        iscompleted = false;
     }
 }
 
