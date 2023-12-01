@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DragManager : MonoBehaviour
 {
@@ -66,10 +67,11 @@ public class DragManager : MonoBehaviour
         if (allCompleted)
         {
             Debug.Log("DragCompleted");
+            SceneManager.LoadScene(2);
         }
 
         // Randomly select a new drag object to activate for the next round
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
             var randomNo = UnityEngine.Random.Range(0, dragObjects.Count);
 

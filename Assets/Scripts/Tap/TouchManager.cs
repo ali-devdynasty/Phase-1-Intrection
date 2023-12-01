@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TouchManager : MonoBehaviour
@@ -60,6 +61,7 @@ public class TouchManager : MonoBehaviour
         {
             Debug.Log("AllTouchCompleted");
             scenarioText.text = "Completed";
+            SceneManager.LoadScene(2);
         }
 
         for (int i = 0; i < 100; i++)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RotateManager : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class RotateManager : MonoBehaviour
         if (allCompleted)
         {
             Debug.Log("AllRotateCompleted");
+            SceneManager.LoadScene(2);
         }
 
         // Randomly select a new drag object to activate for the next round

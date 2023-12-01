@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SwipeManager : MonoBehaviour
 {
@@ -55,6 +56,7 @@ public class SwipeManager : MonoBehaviour
         if (allCompleted)
         {
             Debug.Log("AllSwipeCompleted");
+            SceneManager.LoadScene(2);
         }
 
         // Randomly select a new drag object to activate for the next round

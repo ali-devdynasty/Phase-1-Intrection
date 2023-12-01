@@ -5,7 +5,31 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Zoom in-out.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Home Interface-1.unity
+    guid: 33d78ed9106e40842a4a53caea3d065d
+  - enabled: 1
+    path: Assets/Scenes/Phase 1 Interface-2.unity
+    guid: 1eb386b3335b9a549af3737220c80546
+  - enabled: 1
+    path: Assets/Scenes/Phase 1-Interface-3.unity
+    guid: 523f671f9aaf4a84587c52f62d3f1ac6
+  - enabled: 1
+    path: Assets/Scenes/Taps Detect.unity
+    guid: fc1dbfd80f41d9e41a21163781716e28
+  - enabled: 1
+    path: Assets/Scenes/SwipeDirectional.unity
+    guid: 64250d0e734d2f341b9d77ed69b9b924
+  - enabled: 1
+    path: Assets/Scenes/Zoom In.unity
+    guid: 490c7f0629b04be4cac06fa643e9f041
+  - enabled: 1
+    path: Assets/Scenes/Zoom Out.unity
+    guid: 1d99a77323c8cf1418ea63bca121df96
+  - enabled: 1
+    path: Assets/Scenes/Drag-object.unity
+    guid: f78f2fa0cc5b4e74e83a278374319204
+  - enabled: 1
+    path: Assets/Scenes/ROTATE.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
