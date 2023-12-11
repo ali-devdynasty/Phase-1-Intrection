@@ -9,45 +9,41 @@ public class Twofingersdoubletap : MonoBehaviour
     private float lastTapTime;
 
     CheckTouchPostion touchPostionchecker;
+
     private void Start()
     {
         touchPostionchecker = GameObject.FindAnyObjectByType<CheckTouchPostion>();
     }
+
     // Update is called once per frame
     void Update()
     {
-
-        // Check if there is at least one touch on the screen
+        // Check if there are at least two touches on the screen
         if (Input.touchCount == 2)
         {
             Touch touch = Input.GetTouch(0);
             Touch touch1 = Input.GetTouch(1);
 
-
-            // Check the phase of the touch
-            switch (touch.phase)
+            // Check the phase of both touches
+            if (touch.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
             {
-                case TouchPhase.Began:
-                    // Calculate the time since the last tap
-                    float timeSinceLastTap = Time.time - lastTapTime;
-                    bool overUi1 = touchPostionchecker.IsTouchOverUI(touch.position);
-                    bool overUi2 = touchPostionchecker.IsTouchOverUI(touch1.position);
+                // Calculate the time since the last double tap
+                float timeSinceLastTap = Time.time - lastTapTime;
 
-                    // Check if it's a double tap
-                    if (timeSinceLastTap < maxTimeBetweenTaps && overUi1 && overUi2)
-                    {
-                        // Called when a one-finger double tap occurs
-                        Debug.Log("Double Tap(Two-finger");
-                        TouchManager.OnTouchScenerioCompleted?.Invoke(touchCategory.DoubleTwoFingure);
-                    }
+                // Check if it's a double tap (considering both touches)
+                bool overUi1 = touchPostionchecker.IsTouchOverUI(touch.position);
+                bool overUi2 = touchPostionchecker.IsTouchOverUI(touch1.position);
 
-                    // Update the last tap time
-                    lastTapTime = Time.time;
-                    break;
+                if (timeSinceLastTap < maxTimeBetweenTaps && overUi1 && overUi2)
+                {
+                    // Called when a two-finger double tap occurs
+                    Debug.Log("Double Tap (Two-finger)");
+                    TouchManager.OnTouchScenerioCompleted?.Invoke(touchCategory.DoubleTwoFingure);
+                }
 
-                    // You can add additional cases for Moved, Stationary, Ended, or Canceled phases if needed
+                // Update the last tap time
+                lastTapTime = Time.time;
             }
         }
-
     }
 }

@@ -61,6 +61,7 @@ public class MovingRightRotate : MonoBehaviour
                             rotationDirection = 0f;
                         }
                     }
+                    GameObject.FindAnyObjectByType<RotateManager>().OnFingueMove();
                     break;
 
                 case TouchPhase.Ended:
@@ -77,13 +78,13 @@ public class MovingRightRotate : MonoBehaviour
                 transform.Rotate(Vector3.up, rotationDirection * rotationSpeed * Time.deltaTime);
                 //Debug.Log("Me" + transform.localRotation.eulerAngles.y + " His " + reference.transform.localRotation.eulerAngles.y);
                 var difference = Mathf.Abs(reference.transform.localRotation.eulerAngles.y - transform.localRotation.eulerAngles.y);
-                Debug.Log(difference);
+                //Debug.Log(difference);
                 if (difference <= 2f) // Adjust the threshold value as needed
                 {
                     iscompleted = true;
                     Debug.Log("RightCompleted");
                     Reset();
-                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.right);
+                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.right,true);
                 }
             }
         }
@@ -101,7 +102,7 @@ public class MovingRightRotate : MonoBehaviour
                     iscompleted = true;
                     Debug.Log("LeftCompleted");
                     Reset();
-                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.left);
+                    GameObject.FindObjectOfType<RotateManager>().OnRotateComplete(Rotate.left,true);
                 }
             }
         }

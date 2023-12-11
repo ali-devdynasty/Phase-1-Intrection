@@ -52,7 +52,7 @@ public class ZoomIn : MonoBehaviour
                     // Apply the new scale
                     transform.localScale = newScale;
 
-                    Debug.Log("Zoom In");
+
 
                     // Increment the zoom in counter
                     zoomInCount++;
@@ -60,15 +60,31 @@ public class ZoomIn : MonoBehaviour
                     // Update the time of the last zoom in action
                     lastZoomInTime = Time.time;
                 }
-                Debug.Log(transform.localScale.x);
+                //Debug.Log(transform.localScale.x);
 
             }
 
-            if(transform.localScale.x >= currentScenerio.referenceSize && !iscomplete)
+            if (transform.localScale.x >= currentScenerio.referenceSize && !iscomplete)
             {
                 iscomplete = true;
                 FindAnyObjectByType<ZoomInManager>().OnZoomComplete();
                 Debug.Log("IsCompleted");
+            }
+
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        break;
+
+                    case TouchPhase.Moved:
+
+                        GameObject.FindAnyObjectByType<ZoomInManager>().OnFingueMove();
+                        break;
+                }
             }
         }
     }

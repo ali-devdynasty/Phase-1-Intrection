@@ -66,6 +66,22 @@ public class SwipeDetector : MonoBehaviour
                 }
             }
         }
+
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    break;
+
+                case TouchPhase.Moved:
+
+                    GameObject.FindAnyObjectByType<SwipeManager>().OnFingueMove();
+                    break;
+            }
+        }
     }
 
     private void DetectSwipe()

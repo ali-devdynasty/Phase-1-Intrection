@@ -17,9 +17,31 @@ public class DragManager : MonoBehaviour
     public int repeatRate;
 
     // Called when the script is first initialized
+
+    private Timer GroupTimer;
+    private Coroutine GroupTimerCoroutine;
     private void Start()
     {
-        // Deactivate all drag objects at the beginning
+
+        GroupTimer = gameObject.AddComponent<Timer>();
+        GroupTimerCoroutine = GroupTimer.StartTimer();
+
+        GameObject.FindAnyObjectByType<GamePlayUi>().GroupId.text = 5.ToString();
+
+        GamePlayUi.onSkip += SkipTask;
+        GamePlayUi.onNext += SkipTask;
+        GamePlayUi.OnWithDraw += WithDrawGroup;
+        GamePlayUi.OnStartBtnClicked += DisplayScenario;
+    }
+    private void OnDestroy()
+    {
+        GamePlayUi.onSkip -= SkipTask;
+        GamePlayUi.onNext -= SkipTask;
+        GamePlayUi.OnWithDraw -= WithDrawGroup;
+        GamePlayUi.OnStartBtnClicked -= DisplayScenario;
+    }
+    private void DisplayScenario()
+    {
         foreach (var dragObject in dragObjects)
         {
             dragObject.gameObject.SetActive(false);
@@ -28,10 +50,12 @@ public class DragManager : MonoBehaviour
         // Activate a random drag object to start the game
         var randomNo = UnityEngine.Random.Range(0, dragObjects.Count);
         dragObjects[randomNo].gameObject.SetActive(true);
+        activeScenerio = dragObjects[randomNo];
+        OntaskStarts(randomNo);
     }
 
     // Called when a drag scenario is completed
-    internal void OnDragCompleted(DragScenerios scenerio)
+    internal void OnDragCompleted(DragScenerios scenerio, bool iscompleted)
     {
         // Iterate through all drag objects to find the one matching the completed scenario
         foreach (var Object in dragObjects)
@@ -39,6 +63,7 @@ public class DragManager : MonoBehaviour
             if (Object.scenerio == scenerio)
             {
                 // Increment the completed time for the specific scenario
+                if(Object.completedTime < repeatRate)
                 Object.completedTime++;
 
                 // Deactivate the completed drag object
@@ -47,6 +72,16 @@ public class DragManager : MonoBehaviour
                 // Reset the drag controller associated with the drag object
                 Object.gameObject.GetComponentInChildren<DragController>().Reset();
 
+
+                int scenerioNumber = dragObjects.IndexOf(Object);
+                if (iscompleted)
+                {
+                    OnTaskCompleted(scenerioNumber);
+                }
+                else
+                {
+                    OnTaskSkipped(scenerioNumber);
+                }
                 // Exit the loop after handling the completed scenario
                 break;
             }
@@ -67,7 +102,10 @@ public class DragManager : MonoBehaviour
         if (allCompleted)
         {
             Debug.Log("DragCompleted");
-            SceneManager.LoadScene(2);
+            StopGroupTimer();
+            DataManager.instance.groupPlayedStates[4].isPlayed = true;
+            DataManager.instance.sessionData.groupData[4].State = State.Completed;
+            GameObject.FindAnyObjectByType<GamePlayUi>().CompletionPanel.SetActive(true);
         }
 
         // Randomly select a new drag object to activate for the next round
@@ -77,12 +115,98 @@ public class DragManager : MonoBehaviour
 
             // Activate a new drag object if it's not the same as the completed scenario
             // and if its completed time is within the repeat rate
-            if (dragObjects[randomNo].scenerio != scenerio && dragObjects[randomNo].completedTime < repeatRate)
+            if (dragObjects[randomNo].completedTime < repeatRate)
             {
                 dragObjects[randomNo].gameObject.SetActive(true);
                 activeScenerio = dragObjects[randomNo];
+                OntaskStarts(randomNo);
+                firstmove = true;
                 return; // Exit the loop after activating a new drag object
             }
+        }
+    }
+
+    private void WithDrawGroup()
+    {
+        DataManager.instance.sessionData.groupData[4].State = State.withdraw;
+        SceneManager.LoadScene(2);
+        DataManager.instance.groupPlayedStates[4].isPlayed = true;
+    }
+
+    private void SkipTask()
+    {
+        OnDragCompleted(activeScenerio.scenerio, false);
+    }
+    public void StopGroupTimer()
+    {
+        float elapsedTime1 = GroupTimer.StopTimer(GroupTimerCoroutine);
+        DataManager.instance.sessionData.groupData[4].TotalTime = elapsedTime1.ToString();
+    }
+    private void OnTaskSkipped(int scenerioNumber)
+    {
+        Debug.Log("Data Added to Data Manager on Task Skipped");
+        DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].CompletedTimes = dragObjects[scenerioNumber].completedTime.ToString();
+
+        // Check if the subtasks list size matches the Completion
+        if (DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].subTasks.Count < dragObjects[scenerioNumber].completedTime)
+        {
+            // Add additional SubTasks elements to match the Completion
+            for (int i = DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].subTasks.Count; i < dragObjects[scenerioNumber].completedTime; i++)
+            {
+                DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].subTasks.Add(new SubTasks());
+            }
+        }
+
+        SubTasks subTasks = DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].subTasks[activeScenerio.completedTime - 1];
+
+        subTasks.state = State.Skip;
+    }
+
+    private void OnTaskCompleted(int scenerioNumber)
+    {
+        Debug.Log("Data Added to Data Manager on Task Completed");
+        DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].CompletedTimes = dragObjects[scenerioNumber].completedTime.ToString();
+        SubTasks subTasks = DataManager.instance.sessionData.groupData[4].tasks[scenerioNumber].subTasks[activeScenerio.completedTime - 1];
+
+
+
+        DateTime currentDateTime = DateTime.Now;
+
+        // Convert the DateTime to a string in a specific format
+        string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        subTasks.timeWhenTask_COmpleted = formattedDateTime;
+        subTasks.state = State.Completed;
+    }
+
+
+    private void OntaskStarts(int randomNo)
+    {
+        Debug.Log("Data Added to Data Manager on Task Started");
+        DataManager.instance.sessionData.groupData[4].tasks[randomNo].CompletedTimes = dragObjects[randomNo].completedTime.ToString();
+        SubTasks sub = new SubTasks();
+
+        DateTime currentDateTime = DateTime.Now;
+
+        // Convert the DateTime to a string in a specific format
+        string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        sub.FirstTouch_TIme = formattedDateTime;
+        DataManager.instance.sessionData.groupData[4].tasks[randomNo].subTasks.Add(sub);
+
+        randomNo++;
+        GameObject.FindAnyObjectByType<GamePlayUi>().taskid.text = randomNo.ToString();
+    }
+    bool firstmove = true;
+    internal void OnFingueMove()
+    {
+        if (firstmove && activeScenerio.gameObject != null)
+        {
+            firstmove = false;
+            int sceneriono = dragObjects.IndexOf(activeScenerio);
+            DateTime currentDateTime = DateTime.Now;
+
+            // Convert the DateTime to a string in a specific format
+            string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+            DataManager.instance.sessionData.groupData[4].tasks[sceneriono].subTasks[activeScenerio.completedTime].FingureMoveStart_Time = formattedDateTime;
         }
     }
 }

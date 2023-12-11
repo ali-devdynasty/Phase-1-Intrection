@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ROTATE.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/DataSheets.unity
+    guid: ff9e86f979a26484088bcc9127b6afcb
   m_configObjects: {}

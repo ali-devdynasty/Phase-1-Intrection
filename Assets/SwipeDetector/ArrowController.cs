@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class ArrowController : MonoBehaviour
@@ -58,7 +57,7 @@ public class ArrowController : MonoBehaviour
         transform.position = startpos;
         rb.velocity = Vector3.zero;
         var swipemanager = GameObject.FindObjectOfType<SwipeManager>();
-        swipemanager.OnSwipeCompleted(direction);
+        swipemanager.OnSwipeCompleted(direction,true);
         alreadyDetected = false;
     }
 

@@ -24,6 +24,7 @@ public class DragController : MonoBehaviour
         void OnMouseDrag()
         {
             transform.position = MouseWorldPosition() + offset;
+            GameObject.FindAnyObjectByType<DragManager>().OnFingueMove();
         }
 
         void OnMouseUp()
@@ -37,7 +38,7 @@ public class DragController : MonoBehaviour
                 if (hitInfo.transform.tag == destinationTag)
                 {
                     transform.position = hitInfo.transform.position + new Vector3(0, 0, -0.01f);
-                GameObject.FindAnyObjectByType<DragManager>().OnDragCompleted(scenerio);
+                    GameObject.FindAnyObjectByType<DragManager>().OnDragCompleted(scenerio,true);
                 }
             }
             collider2d.enabled = true;

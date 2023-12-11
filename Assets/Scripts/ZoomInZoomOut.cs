@@ -52,7 +52,7 @@ public class ZoomInZoomOut : MonoBehaviour
                     // Apply the new scale
                     transform.localScale = newScale;
 
-                    Debug.Log("Zoom Out");
+                   
 
                     // Increment the zoom out counter
                     zoomOutCount++;
@@ -69,6 +69,21 @@ public class ZoomInZoomOut : MonoBehaviour
             isCompleted = true;
             FindAnyObjectByType<ZoomOutManager>().OnZoomComplete();
             Debug.Log("IsCompleted" + currentScenerio.referenceSize);
+        }
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    break;
+
+                case TouchPhase.Moved:
+
+                    GameObject.FindAnyObjectByType<ZoomOutManager>().OnFingueMove();
+                    break;
+            }
         }
     }
     public void SetScenerio(ZoomScenerios scenerios)
