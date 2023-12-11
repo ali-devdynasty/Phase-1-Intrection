@@ -51,7 +51,7 @@ public class ArrowController : MonoBehaviour
         //}
     }
 
-    private void reset()
+    private void Reset()
     {
         gameObject.SetActive(false);
         transform.position = startpos;
