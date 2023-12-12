@@ -178,6 +178,8 @@ public class SwipeManager : MonoBehaviour
         string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
         subTasks.timeWhenTask_COmpleted = formattedDateTime;
         subTasks.state = State.Completed;
+
+        
     }
 
 

@@ -131,6 +131,7 @@ public class SubTasks
     public string FirstTouch_TIme;
     public string FingureMoveStart_Time;
     public string timeWhenTask_COmpleted;
+    public string totalTime;
     public State state;
 }
 public enum State
