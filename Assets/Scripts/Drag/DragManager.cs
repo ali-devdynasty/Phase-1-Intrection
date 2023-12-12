@@ -174,8 +174,39 @@ public class DragManager : MonoBehaviour
 
         // Convert the DateTime to a string in a specific format
         string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
         subTasks.timeWhenTask_COmpleted = formattedDateTime;
+
+        string startime = subTasks.FirstTouch_TIme;
+
+        // Specify the format used for formatting the date and time string
+        string format = "yyyy-MM-dd HH:mm:ss";
+
         subTasks.state = State.Completed;
+        // Try parsing the formatted string back to a DateTime object
+        if (DateTime.TryParseExact(startime, format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+        {
+            // Successfully parsed the string
+            Debug.Log("Parsed DateTime: " + parsedDateTime);
+
+            var completetime = parsedDateTime - currentDateTime;
+            string formattedTimeDifference = completetime.ToString(@"dd\.hh\:mm\:ss");
+
+
+            subTasks.totalTime = formattedTimeDifference;
+        }
+        else
+        {
+            // Failed to parse the string
+            Debug.LogError("Failed to parse DateTime");
+        }
+
+
+
+        // Convert the DateTime to a string in a specific format
+        //string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        //subTasks.timeWhenTask_COmpleted = formattedDateTime;
+        //subTasks.state = State.Completed;
     }
 
 
