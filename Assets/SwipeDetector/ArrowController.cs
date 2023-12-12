@@ -10,11 +10,20 @@ public class ArrowController : MonoBehaviour
     public SwipeDirection direction;
     Vector3 startpos;
     bool alreadyDetected = false;
+    public static bool touched = false;
     private void Start()
     {
         swipeDetector = GameObject.FindAnyObjectByType<SwipeDetector>();
         rb = GetComponent<Rigidbody2D>();
         startpos = transform.position;
+    }
+    private void OnMouseDown()
+    {
+        touched = true;
+    }
+    private void OnMouseUp()
+    {
+        touched = false;
     }
     private void OnEnable()
     {
@@ -27,7 +36,7 @@ public class ArrowController : MonoBehaviour
         {
             alreadyDetected = true;
             ApplyForceToArrows(vector);
-            Invoke("reset", 2);
+            Invoke("Reset", 2);
         }
 
     }

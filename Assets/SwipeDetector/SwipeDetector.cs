@@ -26,17 +26,27 @@ public class SwipeDetector : MonoBehaviour
 
     bool touchedAtBottom = false;
 
+    TouchChecker touchChecker;
+    bool firsttouch = false;
+    private void Start()
+    {
+        touchChecker = GetComponent<TouchChecker>();
+    }
     private void Update()
     {
+        Debug.Log("Onsprite : " + ArrowController.touched);
+        
         foreach (Touch touch in Input.touches)
         {
-            if (touch.phase == TouchPhase.Began)
+            
+            if (touch.phase == TouchPhase.Began )
             {
                 fingerUpPosition = touch.position;
                 fingerDownPosition = touch.position;
+                firsttouch = ArrowController.touched;
             }
 
-            if (!detectSwipeOnlyAfterRelease && touch.phase == TouchPhase.Moved)
+            if (!detectSwipeOnlyAfterRelease && touch.phase == TouchPhase.Moved )
             {
                 fingerDownPosition = touch.position;
                 DetectSwipe();
@@ -46,6 +56,7 @@ public class SwipeDetector : MonoBehaviour
             {
                 fingerDownPosition = touch.position;
                 DetectSwipe();
+                
             }
         }
 
@@ -98,33 +109,57 @@ public class SwipeDetector : MonoBehaviour
                 {
                     case SwipeDirection.Up:
                         forceDirection = Vector2.up;
-                        Debug.Log("Swipe Up detected");
-                        OnSwipe?.Invoke(swipeDirection, forceDirection);
+                        if (firsttouch)
+                        {
+                            firsttouch = false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection);
+                            Debug.Log("Swipe Up detected");
+                        }
                         break;
                     case SwipeDirection.Down:
                         forceDirection = Vector2.down;
-                        OnSwipe?.Invoke(swipeDirection, forceDirection);
-                        Debug.Log("Swipe Down detected");
+                        if (firsttouch)
+                        {
+                            firsttouch= false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection);
+                            Debug.Log("Swipe Down detected");
+                        }
                         break;
                     case SwipeDirection.Left:
                         forceDirection = Vector2.left;
-                        OnSwipe?.Invoke(swipeDirection, forceDirection );
-                        Debug.Log("Swipe Left detected");
+                        if (firsttouch)
+                        {
+                            firsttouch = false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection );
+                            Debug.Log("Swipe Left detected");
+                        }
                         break;
                     case SwipeDirection.Right:
                         forceDirection = Vector2.right;
-                        OnSwipe?.Invoke(swipeDirection, forceDirection);
-                        Debug.Log("Swipe Right detected");
+                        if (firsttouch)
+                        {
+                            firsttouch = false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection);
+                            Debug.Log("Swipe Right detected");
+                        }
                         break;
                     case SwipeDirection.SwipeEdgeRight:
                         forceDirection = Vector2.right;
-                        OnSwipe?.Invoke(swipeDirection, forceDirection);
-                        Debug.Log("Swipe Edge Right detected");
+                        if (firsttouch)
+                        {
+                            firsttouch = false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection);
+                            Debug.Log("Swipe Edge Right detected");
+                        }
                         break;
                     case SwipeDirection.SwipeEdgeLeft:
                         forceDirection = Vector2.left;
-                        OnSwipe?.Invoke(swipeDirection, forceDirection);
-                        Debug.Log("Swipe Edge Left detected");
+                        if (firsttouch)
+                        {
+                            firsttouch = false;
+                            OnSwipe?.Invoke(swipeDirection, forceDirection);
+                            Debug.Log("Swipe Edge Left detected");
+                        }
                         break;
                 }
             }
