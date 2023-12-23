@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ZoomOutManager : MonoBehaviour
 {
-    ZoomInZoomOut zoomIn;
+    ZoomOut zoomIn;
     public List<ZoomScenerios> scenerios;
     public ZoomScenerios currentScenerio;
     public GameObject refernceObj;
@@ -56,7 +56,7 @@ public class ZoomOutManager : MonoBehaviour
     private void DisplayScenerio()
     {
         cube.SetActive(true);
-        zoomIn = GameObject.FindAnyObjectByType<ZoomInZoomOut>();
+        zoomIn = GameObject.FindAnyObjectByType<ZoomOut>();
         var randomNo = UnityEngine.Random.Range(0, scenerios.Count);
         currentScenerio = scenerios[randomNo];
         refernceObj.transform.localScale = new Vector3(currentScenerio.referenceSize, currentScenerio.referenceSize, currentScenerio.referenceSize);
@@ -195,7 +195,7 @@ public class ZoomOutManager : MonoBehaviour
             Debug.Log("Parsed DateTime: " + parsedDateTime);
 
             var completetime = parsedDateTime - currentDateTime;
-            string formattedTimeDifference = completetime.ToString(@"dd\.hh\:mm\:ss");
+            string formattedTimeDifference = completetime.ToString(@"hh\:mm\:ss");
 
 
             subTasks.totalTime = formattedTimeDifference;

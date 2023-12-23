@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -460,13 +460,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 348112350}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 1.09, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9396927, w: 0.34202018}
+  m_LocalPosition: {x: 6.08, y: -3.74, z: 0}
   m_LocalScale: {x: 1.8418514, y: 1.8418514, z: 1.8418514}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 858028287}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 140}
 --- !u!1 &457126646
 GameObject:
   m_ObjectHideFlags: 0
@@ -632,13 +632,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457126646}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.09, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.3420201, w: 0.9396927}
+  m_LocalPosition: {x: -6.7, y: -3.68, z: 0}
   m_LocalScale: {x: 1.8418514, y: 1.8418514, z: 1.8418514}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 858028287}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 40}
 --- !u!1 &561702103
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +701,7 @@ Camera:
   far clip plane: 1000
   field of view: 75
   orthographic: 0
-  orthographic size: 7.03125
+  orthographic size: 9.375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1223,7 +1223,7 @@ Transform:
   m_GameObject: {fileID: 1313300547}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.69840354, w: -0.7157042}
-  m_LocalPosition: {x: -0.23, y: -3.72, z: 0}
+  m_LocalPosition: {x: -0.19, y: -2.2, z: 0}
   m_LocalScale: {x: 1.8418512, y: 1.8418512, z: 1.8418514}
   m_ConstrainProportionsScale: 0
   m_Children: []

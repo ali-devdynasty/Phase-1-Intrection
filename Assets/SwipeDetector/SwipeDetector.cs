@@ -28,6 +28,10 @@ public class SwipeDetector : MonoBehaviour
 
     TouchChecker touchChecker;
     bool firsttouch = false;
+    private float minDistanceForSwipeEdge = 0.2f;
+    private float bottomCornerThresholdX = 0.2f;
+    private float bottomCornerThresholdY = 0.2f;
+
     private void Start()
     {
         touchChecker = GetComponent<TouchChecker>();
@@ -144,7 +148,7 @@ public class SwipeDetector : MonoBehaviour
                         }
                         break;
                     case SwipeDirection.SwipeEdgeRight:
-                        forceDirection = Vector2.right;
+                        forceDirection = Vector2.up + Vector2.right;
                         if (firsttouch)
                         {
                             firsttouch = false;
@@ -153,7 +157,7 @@ public class SwipeDetector : MonoBehaviour
                         }
                         break;
                     case SwipeDirection.SwipeEdgeLeft:
-                        forceDirection = Vector2.left;
+                        forceDirection = Vector2.up + Vector2.left;
                         if (firsttouch)
                         {
                             firsttouch = false;
@@ -177,19 +181,26 @@ public class SwipeDetector : MonoBehaviour
         float absX = Mathf.Abs(x);
         float absY = Mathf.Abs(y);
         // Check for edge swipes first, as they have higher priority
-        if (absX > absY)
+        float diagonalDistance = Mathf.Sqrt(x * x + y * y);
+
+        if (diagonalDistance > minDistanceForSwipe && touchedAtBottom)
         {
-            if (x > minDistanceForSwipe && touchedAtBottom)
+            // Check for edge swipes based on quadrant
+            if (x > 0 && y > 0)
             {
                 return SwipeDirection.SwipeEdgeRight;
             }
-            else if (x < -minDistanceForSwipe && touchedAtBottom)
+            else if (x < 0 && y > 0)
             {
                 return SwipeDirection.SwipeEdgeLeft;
             }
+            else
+            {
+                // Handle non-edge diagonal swipes (optional)
+            }
         }
 
-       
+
 
         if (absX > absY)
         {
@@ -216,6 +227,16 @@ public class SwipeDetector : MonoBehaviour
 
         return SwipeDirection.None;
     }
+
+    // Add a method to check if touch occurred at bottom corner
+    private bool IsTouchAtBottomCorner(Vector2 touchPosition)
+    {
+        // Implement your logic here to check if touch position is within a specific area near bottom corners
+        // You can use Screen.width/height and touchPosition coordinates to define the area
+        return (touchPosition.x < bottomCornerThresholdX && touchPosition.y < bottomCornerThresholdY);
+    }
+
+
 
 
 

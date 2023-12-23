@@ -184,7 +184,7 @@ public class TouchManager : MonoBehaviour
             Debug.Log("Parsed DateTime: " + parsedDateTime);
 
             var completetime = parsedDateTime - currentDateTime;
-            string formattedTimeDifference = completetime.ToString(@"dd\.hh\:mm\:ss");
+            string formattedTimeDifference = completetime.ToString(@"hh\:mm\:ss");
 
 
             subTasks.totalTime = formattedTimeDifference;

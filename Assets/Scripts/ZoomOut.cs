@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ZoomInZoomOut : MonoBehaviour
+public class ZoomOut : MonoBehaviour
 {
     [SerializeField]
     float zoomSpeed = 0.1f;
